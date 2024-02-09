@@ -6,13 +6,13 @@
 1. Откройте командную строку и перейдите в директорию ***binary_viewer***.
 
 ```shell
-  cd ..\binary_viewer
+  cd \path_to_project\binary_viewer
 ```
 
-2. Затем введите в командной строке следующее:
+2. Затем запустите приложении из командной строки:
 
 ```shell
-  python src\binary_viewer.py «ПУТЬ ДО ФАЙЛА» > report.txt
+  python src\binary_viewer.py path_to_file > report.txt
 ```
 
 3. Откройте файл ***report.txt*** после окончания работы программы.
