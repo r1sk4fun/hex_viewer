@@ -2,34 +2,39 @@ import os
 import sys
 
 
-def print_readable_bytes(bytes_data):
+def readable_bytes(bytes_data: bytes) -> str:
     """
-    Function to print readable characters from the given bytes data.
+    Function to create string of readable characters from the given bytes data.
     
     Parameters: bytes_data (bytes): the input bytes data to be processed.
 
-    Returns: None
+    Returns: string
     """
+    output_line = ""
     for readable_byte in bytes_data:
         if readable_byte >= 32 and readable_byte <= 126:
-            print(chr(readable_byte), end="")
+            output_line += chr(readable_byte)
         else:
-            print(".", end="")
+            output_line += "."
+    
+    return output_line
 
 
-def print_partial_batch(bytes_data):
+def partial_batch(bytes_data: bytes) -> str:
     """
-    Function to print readable characters from the partial batch of bytes data.
+    Function to create missing string from the partial batch of bytes data.
 
     Parameters: bytes_data (bytes): the input bytes data to be processed
 
-    Returns: None
+    Returns: string
     """
-    print(" " * ((3 * (16 - len(bytes_data))) - 1), "|", end=" ")
-    print_readable_bytes(bytes_data)
+    output_line = " " * ((3 * (16 - len(bytes_data)))) + "|" + " "
+    output_line += readable_bytes(bytes_data)
+
+    return output_line
 
 
-def read_file(file_path):
+def read_file(file_path: str) -> None:
     """
     Function to read a file and print its contents in a hexadecimal and readable format.
     
@@ -40,13 +45,14 @@ def read_file(file_path):
     with open(file_path, 'rb') as file:
         for step in range(0, os.path.getsize(file_path), 16):
             bytes_data = file.read(16)
+            output_line = ""
             for byte_counter, byte in enumerate(bytes_data):
-                print("{:02x}".format(byte, 2), end=" ")
+                output_line += "{:02x}".format(byte, 2) + " "
                 if (byte_counter + 1) % 16 == 0:
-                    print("|", end=" ")
-                    print_readable_bytes(bytes_data)
-                    print("")
-        print_partial_batch(bytes_data)
+                    output_line += "| " + readable_bytes(bytes_data)
+            if step + 16 >= os.path.getsize(file_path):
+                output_line += partial_batch(bytes_data)
+            print(output_line)
 
 
 if __name__ == "__main__":
