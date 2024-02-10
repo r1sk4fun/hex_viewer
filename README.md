@@ -1,18 +1,16 @@
-# Запуск проекта
+# LAUNCH OF THE PROJECT
 
-| ВАЖНО: ИСПОЛЬЗУЙТЕ PYTHON 3.10.x ИЛИ ВЫШЕ |
+| IMPORTANT: USE PYTHON 3.10.x OR HIGHER |
 | --- |
 
-1. Откройте командную строку и перейдите в директорию ***binary_viewer***.
+1. Go to scripts directory.
 
 ```shell
-  cd \path_to_project\binary_viewer
+  cd .\scripts\
 ```
 
-2. Затем запустите приложении из командной строки:
+2. Call ***start.bat*** script.
 
 ```shell
-  python src\binary_viewer.py path_to_file > report.txt
+  .\start.bat
 ```
-
-3. Откройте файл ***report.txt*** после окончания работы программы.
