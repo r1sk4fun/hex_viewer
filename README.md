@@ -3,14 +3,8 @@
 | IMPORTANT: USE PYTHON 3.10.x OR HIGHER |
 | --- |
 
-1. Go to scripts directory.
+1. Call ***start.bat*** script.
 
 ```shell
-  cd .\scripts\
-```
-
-2. Call ***start.bat*** script.
-
-```shell
-  .\start.bat
+  .\scripts\start.bat
 ```
