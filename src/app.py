@@ -27,7 +27,7 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
 
 
     def set_scrollbar_maximum(self):
-        self.blockScrollBar.setMaximum(os.path.getsize(self.file_path) // self.BLOCK_SIZE)
+        self.blockScrollBar.setMaximum((os.path.getsize(self.file_path) // self.BLOCK_SIZE) * 16)
 
 
     def open_file(self):
@@ -47,7 +47,7 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
         if not self.file_path:
             return None
         with open(self.file_path, 'rb') as file:
-            file.seek(self.blockScrollBar.value() * self.BLOCK_SIZE)
+            file.seek(self.blockScrollBar.value() * (2 * 16))
             block = file.read(self.BLOCK_SIZE)
         rows = [block[i:i + self.BLOCK_WIDTH] for i in range(0, len(block), self.BLOCK_WIDTH)]
         for num, row in enumerate(rows, start=1):
@@ -55,13 +55,13 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
 
 
     def show_bytes_quantity(self, num: int) -> str:
-        return "{:08x}".format((num * 16) + (self.blockScrollBar.value() * self.BLOCK_SIZE)) + ": "
+        return "{:08x}".format((num * 16) + (self.blockScrollBar.value() * (2 * 16))) + ": "
 
 
     def show_bytes(self, row: bytes) -> str:
         output_line = ""
         for byte in row:
-            output_line += "{:02x}".format(byte, 2) + " "
+            output_line += "{:02x}".format(byte) + " "
         if len(row) < self.BLOCK_WIDTH:
             output_line += " " * (self.BLOCK_WIDTH - len(row)) * 3
         return output_line + "| "
