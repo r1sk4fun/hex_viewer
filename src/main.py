@@ -18,15 +18,15 @@ class GUI(QMainWindow, main_window.Ui_MainWindow):
         self.openFile.triggered.connect(self.open_file)
         self.closeFile.triggered.connect(self.close_file)
         self.browseGitHub.triggered.connect(lambda: webbrowser.open('https://github.com/r1sk4fun/binary_viewer.git'))
-        self.blockScrollBar.valueChanged.connect(self.show_new_block)
+        self.blockScrollBar.valueChanged.connect(self.scroll_handler)
 
 
-    def show_new_block(self):
+    def scroll_handler(self):
         self.textView.clear()
         self.read_by_block()
 
 
-    def setblockSpinMaximum(self):
+    def set_scrollbar_maximum(self):
         self.blockScrollBar.setMaximum(os.path.getsize(self.file_path) // self.BLOCK_SIZE)
 
 
@@ -34,7 +34,7 @@ class GUI(QMainWindow, main_window.Ui_MainWindow):
         file_path = QFileDialog.getOpenFileName(self, 'Open File', 'C:/')
         if file_path[0]:
             self.file_path = file_path[0]
-            self.setblockSpinMaximum()
+            self.set_scrollbar_maximum()
             self.textView.clear()
             self.read_by_block()
 
