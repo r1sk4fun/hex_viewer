@@ -52,8 +52,8 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
             file.seek(self.blockScrollBar.value() * (2 * 16))
             block = file.read(self.BLOCK_SIZE)
         rows = [block[i:i + self.BLOCK_WIDTH] for i in range(0, len(block), self.BLOCK_WIDTH)]
-        for num, row in enumerate(rows, start=1):
-            self.textView.append(self.show_bytes_quantity(num) + self.show_bytes(row) + self.show_printable_bytes(row))
+        for num, row in enumerate(rows):
+            self.textView.appendPlainText(self.show_bytes_quantity(num) + self.show_bytes(row) + self.show_printable_bytes(row))
 
 
     def show_bytes_quantity(self, num: int) -> str:
