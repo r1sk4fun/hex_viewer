@@ -51,7 +51,7 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
             block = file.read(self.BLOCK_SIZE)
         rows = [block[i:i + self.BLOCK_WIDTH] for i in range(0, len(block), self.BLOCK_WIDTH)]
         for num, row in enumerate(rows, start=1):
-            self.textView.append(self.show_bytes_quantity(num) + self.show_bytes(row) + self.show_readable_bytes(row))
+            self.textView.append(self.show_bytes_quantity(num) + self.show_bytes(row) + self.show_printable_bytes(row))
 
 
     def show_bytes_quantity(self, num: int) -> str:
@@ -67,11 +67,11 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
         return output_line + "| "
 
 
-    def show_readable_bytes(self, row: bytes) -> str:
+    def show_printable_bytes(self, row: bytes) -> str:
         output_line = ""
-        for readable_byte in row:
-            if readable_byte >= 32 and readable_byte <= 126:
-                output_line += chr(readable_byte)
+        for byte in row:
+            if byte >= 32 and byte <= 126:
+                output_line += chr(byte)
             else:
                 output_line += "."
         return output_line
