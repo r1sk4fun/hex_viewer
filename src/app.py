@@ -34,12 +34,14 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
         file_path = QFileDialog.getOpenFileName(self, 'Open File', 'C:/')
         if file_path[0]:
             self.file_path = file_path[0]
+            self.setWindowTitle('HexViewer - ' + file_path[0])
             self.set_scrollbar_maximum()
             self.textView.clear()
             self.read_block()
 
 
     def close_file(self):
+        self.setWindowTitle('HexViewer')
         self.textView.clear()
 
 
