@@ -2,10 +2,10 @@ import os
 import sys
 import webbrowser
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QApplication
-import main_window
+import ui
 
 
-class GUI(QMainWindow, main_window.Ui_MainWindow):
+class GUI(QMainWindow, ui.Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
