@@ -55,7 +55,7 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
 
 
     def show_bytes_quantity(self, num: int) -> str:
-        return "{:08x}".format((num * 16) + (self.blockScrollBar.value() * (2 * 16))) + ": "
+        return "{:08x}".format((num * 16) + (self.blockScrollBar.value() * (2 * 16))).upper() + ": "
 
 
     def show_bytes(self, row: bytes) -> str:
@@ -64,7 +64,7 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
             output_line += "{:02x}".format(byte) + " "
         if len(row) < self.BLOCK_WIDTH:
             output_line += " " * (self.BLOCK_WIDTH - len(row)) * 3
-        return output_line + "| "
+        return output_line.upper() + "| "
 
 
     def show_printable_bytes(self, row: bytes) -> str:
