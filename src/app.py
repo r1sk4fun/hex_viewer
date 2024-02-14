@@ -18,7 +18,7 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
         self.openFile.triggered.connect(self.open_file)
         self.closeFile.triggered.connect(self.close_file)
         self.browseGitHub.triggered.connect(lambda: webbrowser.open('https://github.com/r1sk4fun/binary_viewer.git'))
-        self.blockScrollBar.valueChanged.connect(self.scroll_handler)
+        self.scrollBar.valueChanged.connect(self.scroll_handler)
 
 
     def scroll_handler(self):
@@ -27,7 +27,7 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
 
 
     def set_scrollbar_maximum(self):
-        self.blockScrollBar.setMaximum((os.path.getsize(self.file_path) // self.BLOCK_SIZE) * 16)
+        self.scrollBar.setMaximum((os.path.getsize(self.file_path) // self.BLOCK_SIZE) * 16)
 
 
     def open_file(self):
@@ -49,7 +49,7 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
         if not self.file_path:
             return None
         with open(self.file_path, 'rb') as file:
-            file.seek(self.blockScrollBar.value() * (2 * 16))
+            file.seek(self.scrollBar.value() * (2 * 16))
             block = file.read(self.BLOCK_SIZE)
         rows = [block[i:i + self.BLOCK_WIDTH] for i in range(0, len(block), self.BLOCK_WIDTH)]
         for num, row in enumerate(rows):
@@ -57,7 +57,7 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
 
 
     def show_bytes_quantity(self, num: int) -> str:
-        return "{:08x}".format((num * 16) + (self.blockScrollBar.value() * (2 * 16))).upper() + ": "
+        return "{:08x}".format((num * 16) + (self.scrollBar.value() * (2 * 16))).upper() + ": "
 
 
     def show_bytes(self, row: bytes) -> str:

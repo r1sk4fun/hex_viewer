@@ -65,7 +65,7 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QScrollBar" name="blockScrollBar">
+       <widget class="QScrollBar" name="scrollBar">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
