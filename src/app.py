@@ -85,15 +85,15 @@ class HexViewer():
 
 
 def main():
-    app = HexViewer()
-    app.open_file()
-    app.set_current_page()
-    app.read_block()
-    while True:
-        try:
-            app.set_current_page()
-            app.read_block()
-        except KeyboardInterrupt:
+    try:
+        app = HexViewer()
+        app.open_file()
+        app.set_current_page()
+        app.read_block()
+        while True:
+                app.set_current_page()
+                app.read_block()
+    except KeyboardInterrupt:
             sys.exit()
 
 
