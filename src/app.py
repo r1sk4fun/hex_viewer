@@ -1,69 +1,67 @@
 import os
 import sys
-import webbrowser
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QApplication
-import ui
 
 
-class GUI(QMainWindow, ui.Ui_MainWindow):
+class HexViewer():
     def __init__(self):
-        super().__init__()
-        self.setupUi(self)
-
-        self.BLOCK_WIDTH = 16
-        self.BLOCK_HEIGHT = 32
-        self.BLOCK_SIZE = self.BLOCK_WIDTH * self.BLOCK_HEIGHT
+        self.BLOCK_WIDTH: int = 16
+        self.BLOCK_HEIGHT: int = 32
+        self.BLOCK_SIZE: int = self.BLOCK_WIDTH * self.BLOCK_HEIGHT
         self.file_path: str | None = None
-
-        self.openFile.triggered.connect(self.open_file)
-        self.closeFile.triggered.connect(self.close_file)
-        self.browseGitHub.triggered.connect(lambda: webbrowser
-                                            .open('https://github.com/r1sk4fun/binary_viewer.git'))
-        self.scrollBar.valueChanged.connect(self.scroll_handler)
+        self.pages_minimum: int = 0
+        self.pages_maximum: int = 0
+        self.current_page: int = 0
 
 
-    def scroll_handler(self):
-        self.textView.clear()
-        self.read_block()
+    def set_pages_maximum(self):
+        self.pages_maximum = os.path.getsize(self.file_path) // self.BLOCK_SIZE
 
 
-    def set_scrollbar_maximum(self):
-        self.scrollBar.setMaximum((os.path.getsize(self.file_path) // self.BLOCK_SIZE) * 16)
+    def set_current_page(self):
+        while True:
+            page = input(f"Current page is {self.current_page} out of {self.pages_maximum}: ")
+            match page:
+                case page if not page.isnumeric():
+                    print("Please enter a number")
+                case page if int(page) < self.pages_minimum or int(page) > self.pages_maximum:
+                    print("Page doesn't exist")
+                case _:
+                    self.current_page = int(page)
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    break
 
 
     def open_file(self):
-        file_path = QFileDialog.getOpenFileName(self, 'Open File', 'C:/')
-        if file_path[0]:
-            self.file_path = file_path[0]
-            self.setWindowTitle('HexViewer - ' + file_path[0])
-            self.set_scrollbar_maximum()
-            self.textView.clear()
-            self.read_block()
-
-
-    def close_file(self):
-        self.setWindowTitle('HexViewer')
-        self.textView.clear()
+        while True:
+            file_path = input("Enter path to file: ")
+            if os.path.isfile(file_path):
+                self.file_path = file_path
+                self.set_pages_maximum()
+                os.system('cls' if os.name == 'nt' else 'clear')
+                self.read_block()
+                break
+            else:
+                print("File doesn't exist")
+                pass
 
 
     def read_block(self):
         if not self.file_path:
             return None
         with open(self.file_path, 'rb') as file:
-            file.seek(self.scrollBar.value() * (2 * 16))
+            file.seek(self.current_page * self.BLOCK_SIZE)
             block = file.read(self.BLOCK_SIZE)
         # split block into rows
         rows = [block[i:i + self.BLOCK_WIDTH] for i in range(0, len(block), self.BLOCK_WIDTH)]
         for num, row in enumerate(rows):
-            self.textView.appendPlainText(self.show_bytes_quantity(num) + 
-                                          self.show_bytes(row) + 
-                                          self.show_printable_bytes(row))
+            print(self.show_bytes_quantity(num) + self.show_bytes(row) + self.show_printable_bytes(row))
 
 
     def show_bytes_quantity(self, num: int) -> str:
         # (num * 16) for current block offset
-        # (self.scrollBar.value() * (2 * 16)) for current scrollbar offset
-        return "{:08x}".format((num * 16) + (self.scrollBar.value() * (2 * 16))).upper() + ": "
+        # (self.current_page * self.BLOCK_SIZE) for current page offset
+        return "{:08x}".format((num * 16) + (self.current_page * self.BLOCK_SIZE)).upper() + ": "
 
 
     def show_bytes(self, row: bytes) -> str:
@@ -88,10 +86,16 @@ class GUI(QMainWindow, ui.Ui_MainWindow):
 
 
 def main():
-    app = QApplication(sys.argv)
-    window = GUI()
-    window.show()
-    sys.exit(app.exec_())
+    app = HexViewer()
+    app.open_file()
+    app.set_current_page()
+    app.read_block()
+    while True:
+        try:
+            app.set_current_page()
+            app.read_block()
+        except KeyboardInterrupt:
+            sys.exit()
 
 
 if __name__ == '__main__':
