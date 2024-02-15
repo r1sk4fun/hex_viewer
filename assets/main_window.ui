@@ -66,6 +66,9 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QScrollBar" name="scrollBar">
+        <property name="focusPolicy">
+         <enum>Qt::StrongFocus</enum>
+        </property>
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>

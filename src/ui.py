@@ -44,6 +44,7 @@ class Ui_MainWindow(object):
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.scrollBar = QtWidgets.QScrollBar(self.centralwidget)
+        self.scrollBar.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.scrollBar.setOrientation(QtCore.Qt.Vertical)
         self.scrollBar.setObjectName("scrollBar")
         self.verticalLayout.addWidget(self.scrollBar)
